@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 
-const API_URL = "http://localhost:5000";
-
+const API_URL = import.meta.env.VITE_API_URL;
 function App() {
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [isRegister, setIsRegister] = useState(false);
@@ -203,8 +202,7 @@ const handleResumeUpload = async () => {
         formData.append("resume", resumeFile);
 
         const response = await fetch(
-            "http://localhost:5000/api/resume/upload",
-            {
+`${import.meta.env.VITE_API_URL}/api/resume/upload`,            {
                 method: "POST",
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -246,8 +244,7 @@ const analyzeJob = async () => {
         const token = localStorage.getItem("token");
 
         const response = await fetch(
-            "http://localhost:5000/api/ai/analyze",
-            {
+`${import.meta.env.VITE_API_URL}/api/ai/analyze`,            {
                 method: "POST",
 
                 headers: {
@@ -281,7 +278,7 @@ const analyzeJob = async () => {
         const token = localStorage.getItem("token");
 
         const response = await fetch(
-            "http://localhost:5000/api/resume",
+            `${import.meta.env.VITE_API_URL}/api/resume`,
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -801,87 +798,7 @@ const analyzeJob = async () => {
 
 </div>
 
-      {showAI && (
-
-  <section className="ai-card">
-
-    <h2>🤖 AI Job Analyzer</h2>
-
-    <p>
-      Paste a job description and let AI analyze
-      how well the role matches your skills.
-    </p>
-
-    <textarea
-      className="ai-input"
-      placeholder="Paste the job description here..."
-      value={jobDescription}
-      onChange={(e) => setJobDescription(e.target.value)}
-    />
-
-    <button
-      className="analyze-button"
-      onClick={analyzeJob}
-      disabled={aiLoading}
-    >
-      {aiLoading ? "Analyzing..." : "Analyze Job"}
-    </button>
-
-
-    {analysis && (
-
-      <div className="analysis-result">
-
-        <div className="match-score">
-          <span>Match Score</span>
-          <strong>{analysis.matchScore}%</strong>
-        </div>
-
-        <div>
-          <h3>Summary</h3>
-          <p>{analysis.summary}</p>
-        </div>
-
-        <div>
-          <h3>Matching Skills</h3>
-
-          <div className="skills">
-            {analysis.matchingSkills.map(
-              (skill, index) => (
-                <span key={index}>
-                  {skill}
-                </span>
-              )
-            )}
-          </div>
-        </div>
-
-        <div>
-          <h3>Missing Skills</h3>
-
-          <div className="skills">
-            {analysis.missingSkills.map(
-              (skill, index) => (
-                <span key={index}>
-                  {skill}
-                </span>
-              )
-            )}
-          </div>
-        </div>
-
-        <div>
-          <h3>Recommendation</h3>
-          <p>{analysis.recommendation}</p>
-        </div>
-
-      </div>
-
-    )}
-
-  </section>
-
-)}
+      
 
 
       {showForm && (
